@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.air_forecast.api.AirForecastAPI;
+import com.example.air_forecast.constants.Constants;
 import com.example.air_forecast.model.AirData;
 import com.example.air_forecast.model.AirDetails;
 import com.google.firebase.database.DatabaseReference;
@@ -27,7 +28,7 @@ public class AirAsyncTask extends AsyncTask<Void, Void, Void> {
 
     private static final String TAG = "AirRetrofit";
 
-    DatabaseReference reference;
+    private DatabaseReference reference;
 
     @Override
     protected Void doInBackground(Void... voids) {
@@ -36,12 +37,12 @@ public class AirAsyncTask extends AsyncTask<Void, Void, Void> {
         final AirData airDataObject = new AirData();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(AirForecastAPI.URL)
+                .baseUrl(Constants.getURL())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         AirForecastAPI airForecastAPI = retrofit.create(AirForecastAPI.class);
-        Call<AirDetails> call = airForecastAPI.getDetails();
+        Call<AirDetails> call = airForecastAPI.getDetails("Skopje", Constants.getCountry(), Constants.getApiKey());
 
         call.enqueue(new Callback<AirDetails>() {
             @Override

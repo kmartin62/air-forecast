@@ -1,5 +1,6 @@
-package com.example.air_forecast.retrofit;
+package com.example.air_forecast.asynctask;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.air_forecast.api.AirForecastAPI;
@@ -16,17 +17,22 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AirRetrofit {
+public class AirAsyncTask extends AsyncTask<Void, Void, Void> {
 
-    public AirRetrofit() {
+    private String city;
+
+    public AirAsyncTask(String city) {
+        this.city = city;
     }
 
     private static final String TAG = "AirRetrofit";
 
     DatabaseReference reference;
 
-    public void getRequest() {
-        reference = FirebaseDatabase.getInstance().getReference().child("AirData");
+    @Override
+    protected Void doInBackground(Void... voids) {
+
+        reference = FirebaseDatabase.getInstance().getReference().child(city);
         final AirData airDataObject = new AirData();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -44,7 +50,7 @@ public class AirRetrofit {
                 Log.d(TAG, "onResponse: received informations " + response.body().toString());
 
                 ArrayList<AirData> airData = response.body().getData();
-                for(int i = 0; i < 5; i ++) {
+                for (int i = 0; i < 5; i++) {
                     airDataObject.setAqi(airData.get(i).getAqi());
                     airDataObject.setPm10(airData.get(i).getPm10());
                     airDataObject.setPm25(airData.get(i).getPm25());
@@ -64,5 +70,6 @@ public class AirRetrofit {
                 Log.e(TAG, "Something went wrong " + t.getMessage());
             }
         });
+        return null;
     }
 }

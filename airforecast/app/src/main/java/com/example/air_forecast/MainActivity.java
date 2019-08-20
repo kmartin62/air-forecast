@@ -6,9 +6,10 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.air_forecast.api.AirForecastAPI;
+import com.example.air_forecast.asynctask.AirAsyncTask;
 import com.example.air_forecast.model.AirData;
 import com.example.air_forecast.model.AirDetails;
-import com.example.air_forecast.retrofit.AirRetrofit;
+//import com.example.air_forecast.retrofit.AirRetrofit;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -33,12 +34,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         txtView = findViewById(R.id.txtView);
 
-        reference = FirebaseDatabase.getInstance().getReference().child("AirData");
+//        reference = FirebaseDatabase.getInstance().getReference().child("AirData");
 
-        AirRetrofit airRetrofit = new AirRetrofit();
+//        AirRetrofit airRetrofit = new AirRetrofit();
+//
+//        airRetrofit.getRequest();
 
-        airRetrofit.getRequest();
+        AirAsyncTask airAsyncTask = new AirAsyncTask("Skopje");
 
+
+        airAsyncTask.execute();
 
 
 

@@ -3,13 +3,11 @@ package com.example.air_forecast.service;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.air_forecast.asynctask.AirAsyncTask;
 import com.example.air_forecast.fragments.HomeFragment;
 
 import static com.example.air_forecast.MainActivity.isClicked;
-import static com.example.air_forecast.fragments.HomeFragment.sharedCity;
 
 public class AirJobScheduler extends JobService {
 
@@ -36,8 +34,8 @@ public class AirJobScheduler extends JobService {
 
     private void doBackgroundWork(final JobParameters params) {
 
-        Toast.makeText(AirJobScheduler.this, "City from JobScheduler:" + HomeFragment.sharedCity, Toast.LENGTH_SHORT).show();
-        isClicked = false;
+//        Toast.makeText(AirJobScheduler.this, "City from JobScheduler:" + HomeFragment.sharedCity, Toast.LENGTH_SHORT).show();
+//        isClicked = false;
 
         new Thread(new Runnable() {
             @Override
@@ -48,9 +46,9 @@ public class AirJobScheduler extends JobService {
 
                     jobFinished(params, true);
 
-                Log.d(TAG, "Finished");
-                isClicked = true;
-                Log.d("isClicked from Service", String.valueOf(isClicked));
+//                Log.d(TAG, "Finished");
+//                isClicked = true;
+//                Log.d("isClicked from Service", String.valueOf(isClicked));
             }
         }).start();
     }

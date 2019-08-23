@@ -4,7 +4,6 @@ import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
@@ -15,9 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.air_forecast.broadcast.NetworkChangeReceiver;
 import com.example.air_forecast.fragments.GraphFragment;
@@ -29,7 +26,7 @@ import com.example.air_forecast.service.AirJobScheduler;
 public class MainActivity extends AppCompatActivity {
 
 
-    public static boolean connectedToNetwork = true;
+    public static boolean connectedToNetwork;
     public static boolean isClicked = false;
     private BroadcastReceiver broadcastReceiver;
     BottomNavigationView bottomNav;
@@ -94,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+//        Toast.makeText(this, String.valueOf(connectedToNetwork), Toast.LENGTH_SHORT).show();
         super.onStart();
     }
 
@@ -119,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onDestroy() {
         unregisterNetworkChanges();
@@ -127,20 +126,21 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void scheduleJob() {
 
-        ComponentName componentName = new ComponentName(this, AirJobScheduler.class);
-        JobInfo jobInfo = new JobInfo.Builder(1456759824, componentName)
-                .setPersisted(true)
-                .setPeriodic(1000 * 60 * 15) //15 minuti
-                .build();
-
-        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
-        int resultCode = jobScheduler.schedule(jobInfo);
-        if(resultCode == JobScheduler.RESULT_SUCCESS) {
-            Log.d("AA", "Successfully");
-        }
-    }
+//    public void scheduleJob() {
+//
+//        ComponentName componentName = new ComponentName(this, AirJobScheduler.class);
+//        JobInfo jobInfo = new JobInfo.Builder(1456759824, componentName)
+//                .setPersisted(true)
+//                .setPeriodic(1000 * 60 * 15) //15 minuti
+//                .build();
+//
+//        JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+//        int resultCode = jobScheduler.schedule(jobInfo);
+//        if(resultCode == JobScheduler.RESULT_SUCCESS) {
+//            Log.d("AA", "Successfully");
+//        }
+//    }
 
 
     @Override

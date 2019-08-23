@@ -60,8 +60,7 @@ public class AirAsyncTask extends AsyncTask<Void, Void, Void> {
                             "pm10: " + airData.get(i).getPm10() + "\n" +
                             "pm25: " + airData.get(i).getPm25());
                     String key = airData.get(i).getTimestamp_local();
-                    String[] k = key.split("T");
-                    reference.child(k[1]).setValue(airDataObject);
+                    reference.child(key).setValue(airDataObject);
                 }
 
             }

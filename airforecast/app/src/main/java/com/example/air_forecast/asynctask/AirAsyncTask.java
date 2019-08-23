@@ -42,7 +42,7 @@ public class AirAsyncTask extends AsyncTask<Void, Void, Void> {
                 .build();
 
         AirForecastAPI airForecastAPI = retrofit.create(AirForecastAPI.class);
-        Call<AirDetails> call = airForecastAPI.getDetails("Skopje", Constants.getCountry(), Constants.getApiKey());
+        Call<AirDetails> call = airForecastAPI.getDetails(city, Constants.getCountry(), Constants.getApiKey());
 
         call.enqueue(new Callback<AirDetails>() {
             @Override

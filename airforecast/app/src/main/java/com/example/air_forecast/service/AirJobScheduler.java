@@ -3,13 +3,23 @@ package com.example.air_forecast.service;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.example.air_forecast.asynctask.AirAsyncTask;
+import com.example.air_forecast.fragments.HomeFragment;
 
 import static com.example.air_forecast.MainActivity.isClicked;
+import static com.example.air_forecast.fragments.HomeFragment.sharedCity;
 
-public class ExampleJobService extends JobService {
+public class AirJobScheduler extends JobService {
 
-    private static final String TAG = "ExampleJobService";
+    private static final String TAG = "AirJobScheduler";
 
+    private String city;
+
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     @Override
     public boolean onStartJob(JobParameters params) {
@@ -26,22 +36,18 @@ public class ExampleJobService extends JobService {
 
     private void doBackgroundWork(final JobParameters params) {
 
+        Toast.makeText(AirJobScheduler.this, "City from JobScheduler:" + HomeFragment.sharedCity, Toast.LENGTH_SHORT).show();
         isClicked = false;
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for(int i = 0; i < 5; i ++) {
-                    Log.d(TAG, "run " + i);
 
-                    try {
-                        Thread.sleep(1000); //sleep 1 sec
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                AirAsyncTask airAsyncTask = new AirAsyncTask(HomeFragment.sharedCity);
+                airAsyncTask.execute();
+
                     jobFinished(params, true);
 
-                }
                 Log.d(TAG, "Finished");
                 isClicked = true;
                 Log.d("isClicked from Service", String.valueOf(isClicked));

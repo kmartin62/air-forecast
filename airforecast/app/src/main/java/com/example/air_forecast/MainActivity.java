@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static boolean connectedToNetwork;
-    public static boolean isClicked = false;
+    public static boolean isClicked;
     private BroadcastReceiver broadcastReceiver;
     BottomNavigationView bottomNav;
 
@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setSelectedItemId(R.id.nav_home);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+
+
         
 
     }

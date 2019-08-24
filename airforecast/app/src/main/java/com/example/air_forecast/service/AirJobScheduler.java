@@ -5,6 +5,7 @@ import android.app.job.JobService;
 import android.util.Log;
 
 import com.example.air_forecast.asynctask.AirAsyncTask;
+import com.example.air_forecast.asynctask.WeatherAsyncTask;
 import com.example.air_forecast.fragments.HomeFragment;
 
 import static com.example.air_forecast.MainActivity.isClicked;
@@ -34,21 +35,19 @@ public class AirJobScheduler extends JobService {
 
     private void doBackgroundWork(final JobParameters params) {
 
-//        Toast.makeText(AirJobScheduler.this, "City from JobScheduler:" + HomeFragment.sharedCity, Toast.LENGTH_SHORT).show();
-//        isClicked = false;
 
         new Thread(new Runnable() {
             @Override
             public void run() {
 
+                WeatherAsyncTask weatherAsyncTask = new WeatherAsyncTask(HomeFragment.sharedCity);
+                weatherAsyncTask.execute();
+
                 AirAsyncTask airAsyncTask = new AirAsyncTask(HomeFragment.sharedCity);
                 airAsyncTask.execute();
 
-                    jobFinished(params, true);
+                jobFinished(params, true);
 
-//                Log.d(TAG, "Finished");
-//                isClicked = true;
-//                Log.d("isClicked from Service", String.valueOf(isClicked));
             }
         }).start();
     }

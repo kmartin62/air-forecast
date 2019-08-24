@@ -16,11 +16,21 @@ public interface AirForecastAPI {
 
 //    forecast/airquality?city=Skopje&country=MK&key=dba29d449897449e9f73f912b98e5681
 
+//    @Query("city") String city,
+//    @Query("country") String country,
+//    @Query("key") String key
+
 
     @Headers("Content-Type: application/json")
     @GET("forecast/airquality")
     Call<AirDetails> getDetails(@Query("city") String city,
                                 @Query("country") String country,
                                 @Query("key") String key);
+
+//    @Headers("Content-Type: application/json")
+//    @GET("current/airquality?city=Skopje&country=MK&key=dba29d449897449e9f73f912b98e5681")
+//    Call<AirDetailsNow> getDetailsNow();
+
+
 
 }

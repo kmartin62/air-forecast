@@ -20,6 +20,23 @@ import java.util.Objects;
 
 public class AirForecastRetrieve {
 
+    public void retrieveDataActivity(String city, String key, final Activity activity) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(city).child(key);
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()) {
+                    scheduleJob(activity);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 
     public void retrieveData(final String city, String key, final String parameter, final TextView textView, final Activity activity) {

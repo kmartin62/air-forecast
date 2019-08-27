@@ -60,6 +60,8 @@ public class AirForecastRetrieve {
         });
     }
 
+
+
     private void scheduleJob(Activity activity) {
         ComponentName componentName = new ComponentName(Objects.requireNonNull(activity), AirJobScheduler.class);
         JobInfo jobInfo = new JobInfo.Builder(1456759824, componentName)

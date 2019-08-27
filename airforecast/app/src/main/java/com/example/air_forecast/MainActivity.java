@@ -2,13 +2,17 @@ package com.example.air_forecast;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -70,12 +74,10 @@ public class MainActivity extends AppCompatActivity {
         bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
         bottomNav.setSelectedItemId(R.id.nav_home);
-        
 
-
-//        WeatherAsyncTask weatherAsyncTask = new WeatherAsyncTask("Skopje");
-//        weatherAsyncTask.execute();
-
+        if(!isConnected(this)) {
+            builder(this).show();
+        }
         
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Skopje").child(getKey());
 
@@ -95,6 +97,43 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
 
+    }
+
+    private boolean isConnected(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if(networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+            NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+            if((mobile != null && mobile.isConnectedOrConnecting()) || (wifi != null && wifi.isConnectedOrConnecting())) return true;
+            else return false;
+        }
+        else {
+            return false;
+        }
+
+    }
+
+    private AlertDialog.Builder builder(Context c) {
+        AlertDialog.Builder build = new AlertDialog.Builder(c);
+        build.setTitle("No internet connection");
+
+        build.setPositiveButton("Connect to network", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+            }
+        });
+
+        build.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+
+        return build;
     }
 
     private void scheduleJob() {
@@ -161,9 +200,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
 //        Toast.makeText(this, String.valueOf(connectedToNetwork), Toast.LENGTH_SHORT).show();
-//        if(!connectedToNetwork) {
-//            Toast.makeText(this, "Please check your network connection", Toast.LENGTH_SHORT).show();
-//        }
+
         super.onStart();
     }
 

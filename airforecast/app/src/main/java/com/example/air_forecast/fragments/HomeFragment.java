@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.air_forecast.R;
 import com.example.air_forecast.api.WeatherForecastAPI;
@@ -27,9 +28,12 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.TimeZone;
 
+import static com.example.air_forecast.MainActivity.connectedToNetwork;
+
 public class HomeFragment extends Fragment {
 
     public static String sharedCity;
+    private String myCity;
     private ArrayAdapter<String> adapter;
     private Spinner dropDown;
     private static String[] items = new String[]{"Skopje", "Veles", "Strumica", "Radovis"};
@@ -57,7 +61,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 sharedCity = parent.getItemAtPosition(position).toString();
-                airForecastRetrieve.retrieveData(sharedCity, getKey(), txtViewAqi, txtViewPm10, txtViewPm25, getActivity());
+                myCity = sharedCity;
+                airForecastRetrieve.retrieveData(myCity, getKey(), txtViewAqi, txtViewPm10, txtViewPm25, getActivity());
 
             }
 
@@ -98,12 +103,17 @@ public class HomeFragment extends Fragment {
 //            Toast.makeText(getActivity(), "Please check your network connection", Toast.LENGTH_SHORT).show();
 //        }
 
+//        if(!connectedToNetwork) {
+//            Toast.makeText(getActivity(), "Please check your network connection", Toast.LENGTH_SHORT).show();
+//        }
+
         super.onStart();
     }
 
     @Override
     public void onStop() {
 //        Toast.makeText(getActivity(), "OnStop started", Toast.LENGTH_SHORT).show();
+        myCity = sharedCity;
 
         super.onStop();
     }

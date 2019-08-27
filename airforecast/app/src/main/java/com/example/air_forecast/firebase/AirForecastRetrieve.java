@@ -20,26 +20,7 @@ import java.util.Objects;
 
 public class AirForecastRetrieve {
 
-    public void retrieveDataActivity(String city, String key, final Activity activity) {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(city).child(key);
-
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.exists()) {
-                    scheduleJob(activity);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-
-    public void retrieveData(final String city, String key, final String parameter, final TextView textView, final Activity activity) {
+    public void retrieveData(final String city, String key, final TextView textAqi, final TextView pm10, final TextView pm25, final Activity activity) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(city).child(key);
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -50,10 +31,24 @@ public class AirForecastRetrieve {
                     scheduleJob(activity);
                 }
                 else {
-                    String aqi = Objects.requireNonNull(dataSnapshot.child(parameter).getValue()).toString();
+                    String aqi = Objects.requireNonNull(dataSnapshot.child("aqi").getValue()).toString();
                     int n = Integer.parseInt(String.valueOf(aqi.split("\\.")[0]));
+//
+//                    textView.setText(String.valueOf(n));
 
-                    textView.setText(String.valueOf(n));
+                    Log.d("AIRFORECAST", aqi);
+
+                    textAqi.setText(String.valueOf(n));
+
+                    aqi = Objects.requireNonNull(dataSnapshot.child("pm10").getValue()).toString();
+                    n = Integer.parseInt(String.valueOf(aqi.split("\\.")[0]));
+                    pm10.setText(String.valueOf(n));
+
+                    aqi = Objects.requireNonNull(dataSnapshot.child("pm25").getValue()).toString();
+                    n = Integer.parseInt(String.valueOf(aqi.split("\\.")[0]));
+                    pm25.setText(String.valueOf(n));
+
+
                 }
 
             }

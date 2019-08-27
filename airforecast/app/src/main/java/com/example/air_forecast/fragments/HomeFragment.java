@@ -43,7 +43,9 @@ public class HomeFragment extends Fragment {
         View myInflatedView = inflater.inflate(R.layout.fragment_home, container, false);
 
         final AirForecastRetrieve airForecastRetrieve = new AirForecastRetrieve();
-        final TextView txtView = myInflatedView.findViewById(R.id.home_text);
+        final TextView txtViewAqi = myInflatedView.findViewById(R.id.home_text);
+        final TextView txtViewPm10 = myInflatedView.findViewById(R.id.home_text2);
+        final TextView txtViewPm25 = myInflatedView.findViewById(R.id.home_text3);
 
         dropDown = myInflatedView.findViewById(R.id.spinner);
 
@@ -55,7 +57,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 sharedCity = parent.getItemAtPosition(position).toString();
-                airForecastRetrieve.retrieveData(sharedCity, getKey(), "aqi", txtView, getActivity());
+                airForecastRetrieve.retrieveData(sharedCity, getKey(), txtViewAqi, txtViewPm10, txtViewPm25, getActivity());
 
             }
 

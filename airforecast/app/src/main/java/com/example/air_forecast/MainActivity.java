@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.air_forecast.asynctask.WeatherAsyncTask;
 import com.example.air_forecast.broadcast.NetworkChangeReceiver;
 import com.example.air_forecast.firebase.AirForecastRetrieve;
 import com.example.air_forecast.fragments.GraphFragment;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean connectedToNetwork;
     public static boolean isClicked;
     private BroadcastReceiver broadcastReceiver;
-    BottomNavigationView bottomNav;
+    private BottomNavigationView bottomNav;
 
     public static void dialog(boolean value) {
         if(value) {
@@ -70,9 +71,11 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(navListener);
         bottomNav.setSelectedItemId(R.id.nav_home);
         
-        if(!connectedToNetwork) {
-            Toast.makeText(this, "Please check your network connection", Toast.LENGTH_SHORT).show();
-        }
+
+
+//        WeatherAsyncTask weatherAsyncTask = new WeatherAsyncTask("Skopje");
+//        weatherAsyncTask.execute();
+
         
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Skopje").child(getKey());
 
@@ -158,6 +161,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
 //        Toast.makeText(this, String.valueOf(connectedToNetwork), Toast.LENGTH_SHORT).show();
+//        if(!connectedToNetwork) {
+//            Toast.makeText(this, "Please check your network connection", Toast.LENGTH_SHORT).show();
+//        }
         super.onStart();
     }
 

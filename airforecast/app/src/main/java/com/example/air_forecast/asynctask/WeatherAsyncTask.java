@@ -37,7 +37,7 @@ public class WeatherAsyncTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
 
-        reference = FirebaseDatabase.getInstance().getReference().child(city);
+        reference = FirebaseDatabase.getInstance().getReference().child(city+"W");
 
         final WeatherData weatherDataObject = new WeatherData();
 

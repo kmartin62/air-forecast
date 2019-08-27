@@ -1,5 +1,6 @@
 package com.example.air_forecast.firebase;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
@@ -32,21 +33,49 @@ public class AirForecastRetrieve {
                 }
                 else {
                     String aqi = Objects.requireNonNull(dataSnapshot.child("aqi").getValue()).toString();
-                    int n = Integer.parseInt(String.valueOf(aqi.split("\\.")[0]));
+                    final int n = Integer.parseInt(String.valueOf(aqi.split("\\.")[0]));
 //
 //                    textView.setText(String.valueOf(n));
 
                     Log.d("AIRFORECAST", aqi);
 
-                    textAqi.setText(String.valueOf(n));
+                    ValueAnimator animator = ValueAnimator.ofInt(0, n);
+                    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            int currentValue = (Integer) animation.getAnimatedValue();
+                            textAqi.setText(String.valueOf(currentValue));
+                        }
+                    });
+                    animator.setDuration(2000);
+                    animator.start();
+
 
                     aqi = Objects.requireNonNull(dataSnapshot.child("pm10").getValue()).toString();
-                    n = Integer.parseInt(String.valueOf(aqi.split("\\.")[0]));
-                    pm10.setText(String.valueOf(n));
+                    int m = Integer.parseInt(String.valueOf(aqi.split("\\.")[0]));
+                    ValueAnimator animator1 = ValueAnimator.ofInt(0, m);
+                    animator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            int currentValue = (Integer) animation.getAnimatedValue();
+                            pm10.setText(String.valueOf(currentValue));
+                        }
+                    });
+                    animator1.setDuration(2000);
+                    animator1.start();
 
                     aqi = Objects.requireNonNull(dataSnapshot.child("pm25").getValue()).toString();
-                    n = Integer.parseInt(String.valueOf(aqi.split("\\.")[0]));
-                    pm25.setText(String.valueOf(n));
+                    int b = Integer.parseInt(String.valueOf(aqi.split("\\.")[0]));
+                    ValueAnimator animator12 = ValueAnimator.ofInt(0, b);
+                    animator12.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            int currentValue = (Integer) animation.getAnimatedValue();
+                            pm25.setText(String.valueOf(currentValue));
+                        }
+                    });
+                    animator12.setDuration(2000);
+                    animator12.start();
 
 
                 }

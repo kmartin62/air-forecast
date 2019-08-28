@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ public class HomeFragment extends Fragment {
     private String myCity;
     private ArrayAdapter<String> adapter;
     private Spinner dropDown;
+    private FrameLayout aqi_frame;
     private static String[] items = new String[]{"Skopje", "Veles", "Strumica", "Radovis"};
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -50,10 +52,11 @@ public class HomeFragment extends Fragment {
         final TextView txtViewAqi = myInflatedView.findViewById(R.id.home_text);
         final TextView txtViewPm10 = myInflatedView.findViewById(R.id.home_text2);
         final TextView txtViewPm25 = myInflatedView.findViewById(R.id.home_text3);
+        aqi_frame = myInflatedView.findViewById(R.id.frame_aqi);
 
         dropDown = myInflatedView.findViewById(R.id.spinner);
 
-        adapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), android.R.layout.simple_spinner_item, items);
+        adapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, items);
 
         dropDown.setAdapter(adapter);
 
@@ -62,7 +65,7 @@ public class HomeFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 sharedCity = parent.getItemAtPosition(position).toString();
                 myCity = sharedCity;
-                airForecastRetrieve.retrieveData(myCity, getKey(), txtViewAqi, txtViewPm10, txtViewPm25, getActivity());
+                airForecastRetrieve.retrieveData(myCity, getKey(), txtViewAqi, txtViewPm10, txtViewPm25, aqi_frame, getActivity());
 
             }
 

@@ -65,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(!isConnected(this)) {
+            builder(this).show();
+        }
+
         broadcastReceiver = new NetworkChangeReceiver();
 
         registerNetworkBroadcastForNougat();
@@ -75,9 +79,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(navListener);
         bottomNav.setSelectedItemId(R.id.nav_home);
 
-        if(!isConnected(this)) {
-            builder(this).show();
-        }
+
         
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Skopje").child(getKey());
 

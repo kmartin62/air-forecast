@@ -1,14 +1,21 @@
 package com.example.air_forecast.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +25,9 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.air_forecast.R;
-import com.example.air_forecast.api.WeatherForecastAPI;
-import com.example.air_forecast.asynctask.WeatherAsyncTask;
 import com.example.air_forecast.firebase.AirForecastRetrieve;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -33,8 +36,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.TimeZone;
-
-import static com.example.air_forecast.MainActivity.connectedToNetwork;
 
 public class HomeFragment extends Fragment {
 
@@ -62,6 +63,12 @@ public class HomeFragment extends Fragment {
 
         View myInflatedView = inflater.inflate(R.layout.fragment_home, container, false);
 
+        if(!isConnected(getContext())) {
+            builder(getContext()).show();
+            return inflater.inflate(R.layout.offline, container, false);
+        }
+
+
         hashMap = new HashMap<>();
         initMap();
 
@@ -82,6 +89,42 @@ public class HomeFragment extends Fragment {
         dropDown = myInflatedView.findViewById(R.id.spinner);
 
         return myInflatedView;
+    }
+    private boolean isConnected(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if(networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+            NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+            NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+            if((mobile != null && mobile.isConnectedOrConnecting()) || (wifi != null && wifi.isConnectedOrConnecting())) return true;
+            else return false;
+        }
+        else {
+            return false;
+        }
+
+    }
+
+    private AlertDialog.Builder builder(Context c) {
+        AlertDialog.Builder build = new AlertDialog.Builder(c);
+        build.setTitle("No internet connection");
+
+        build.setPositiveButton("Connect to network", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+            }
+        });
+
+        build.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                getActivity().finish();
+            }
+        });
+
+        return build;
     }
 
     private void initMap(){
@@ -111,57 +154,60 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onStart() {
-        
-        aqi_frame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                info_text.setText(getString(R.string.aqiinfo));
-                info_text.setTextColor(Color.WHITE);
-            }
-        });
 
-        pm10_frame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                info_text.setText(getString(R.string.pm10info));
-                info_text.setTextColor(Color.WHITE);
-            }
-        });
+        if(isConnected(getContext())) {
 
-        pm25_frame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                info_text.setText(getString(R.string.pm25info));
-                info_text.setTextColor(Color.WHITE);
-            }
-        });
-        
-        init();
+            aqi_frame.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    info_text.setText(getString(R.string.aqiinfo));
+                    info_text.setTextColor(Color.WHITE);
+                }
+            });
 
-        dropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                initFrames();
-                sharedCity = hashMap.get(parent.getItemAtPosition(position).toString());
-                myCity = sharedCity;
-                airForecastRetrieve.retrieveData(myCity, getKey(), txtViewAqi, txtViewPm10, txtViewPm25, aqi_frame,
-                        pm10_frame, pm25_frame, getActivity());
+            pm10_frame.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    info_text.setText(getString(R.string.pm10info));
+                    info_text.setTextColor(Color.WHITE);
+                }
+            });
 
-            }
+            pm25_frame.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    info_text.setText(getString(R.string.pm25info));
+                    info_text.setTextColor(Color.WHITE);
+                }
+            });
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                //do something
-            }
-        });
+            init();
 
-//        if(!connectedToNetwork) {
-//            Toast.makeText(getActivity(), "Please check your network connection", Toast.LENGTH_SHORT).show();
-//        }
+            dropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    initFrames();
+                    sharedCity = hashMap.get(parent.getItemAtPosition(position).toString());
+                    myCity = sharedCity;
+                    airForecastRetrieve.retrieveData(myCity, getKey(), txtViewAqi, txtViewPm10, txtViewPm25, aqi_frame,
+                            pm10_frame, pm25_frame, getActivity());
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    //do something
+                }
+            });
 
 //        if(!connectedToNetwork) {
 //            Toast.makeText(getActivity(), "Please check your network connection", Toast.LENGTH_SHORT).show();
 //        }
+
+//        if(!connectedToNetwork) {
+//            Toast.makeText(getActivity(), "Please check your network connection", Toast.LENGTH_SHORT).show();
+//        }
+        }
 
         super.onStart();
     }
@@ -171,18 +217,20 @@ public class HomeFragment extends Fragment {
         adapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, res.getStringArray(R.array.cities));
         dropDown.setAdapter(adapter);
 
-        aqi_frame.setBackgroundColor(Color.GREEN);
-        pm10_frame.setBackgroundColor(Color.GREEN);
-        pm25_frame.setBackgroundColor(Color.GREEN);
+        aqi_frame.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_shape_green));
+        pm10_frame.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_shape_green));
+        pm25_frame.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_shape_green));
+
+
         text_aqi.setText("AQI");
         text_pm10.setText("PM10");
         text_pm25.setText("PM25");
     }
 
     private void initFrames(){
-        aqi_frame.setBackgroundColor(Color.GREEN);
-        pm10_frame.setBackgroundColor(Color.GREEN);
-        pm25_frame.setBackgroundColor(Color.GREEN);
+        aqi_frame.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_shape_green));
+        pm10_frame.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_shape_green));
+        pm25_frame.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_shape_green));
 
         txtViewAqi.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
         txtViewPm10.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);

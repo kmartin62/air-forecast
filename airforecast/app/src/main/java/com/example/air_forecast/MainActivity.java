@@ -65,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(!isConnected(this)) {
-            builder(this).show();
-        }
+//        if(!isConnected(this)) {
+//            builder(this).show();
+//        }
 
         broadcastReceiver = new NetworkChangeReceiver();
 

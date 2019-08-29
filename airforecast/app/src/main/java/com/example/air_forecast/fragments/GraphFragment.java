@@ -1,18 +1,22 @@
 package com.example.air_forecast.fragments;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.air_forecast.R;
+import com.example.air_forecast.firebase.AirForecastRetrieve;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
@@ -25,8 +29,13 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class GraphFragment extends Fragment {
 
@@ -40,31 +49,10 @@ public class GraphFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View myInflatedView = inflater.inflate(R.layout.fragment_graph, container, false);
 
+        final AirForecastRetrieve airForecastRetrieve = new AirForecastRetrieve();
+
         barChart = myInflatedView.findViewById(R.id.barChart);
         spinner = myInflatedView.findViewById(R.id.spinner3);
-
-        List<BarEntry> barEntries = new ArrayList<>();
-
-        barEntries.add(new BarEntry(1, 10));
-        barEntries.add(new BarEntry(2, 12));
-        barEntries.add(new BarEntry(3, 15));
-        barEntries.add(new BarEntry(4, 400));
-        barEntries.add(new BarEntry(5, 20));
-        barEntries.add(new BarEntry(6, 22));
-        barEntries.add(new BarEntry(7, 5));
-
-
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Загадување за секој час");
-
-        BarData barData = new BarData(barDataSet);
-        barData.setBarWidth(0.9f);
-
-        barChart.setScaleEnabled(false);
-        barChart.setVisibility(View.VISIBLE);
-        barChart.animateY(5000);
-        barChart.setData(barData);
-        barChart.setFitBars(true);
-
         final Description description = new Description();
 
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, items);
@@ -72,26 +60,13 @@ public class GraphFragment extends Fragment {
 
         barChart.setDescription(description);
 
-
-        XAxis xAxis = barChart.getXAxis();
-        xAxis.setGranularity(1f);
-
-        xAxis.setCenterAxisLabels(true);
-        xAxis.setEnabled(true);
-        xAxis.setDrawGridLines(false);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-
-
-        String[] hours = new String[]{"13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"};
-
-        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(hours));
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                airForecastRetrieve.checkIfExists(parent.getItemAtPosition(position).toString(), getKey(), getActivity());
                 description.setText(parent.getItemAtPosition(position).toString().toUpperCase());
+                airForecastRetrieve.stringArray(barChart, parent.getItemAtPosition(position).toString());
                 barChart.invalidate();
-
             }
 
             @Override
@@ -101,5 +76,17 @@ public class GraphFragment extends Fragment {
         });
 
         return myInflatedView;
+    }
+
+    private String getKey(){
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2:00"));
+        calendar.add(Calendar.HOUR_OF_DAY, 7);
+        Date currentLocalTime = calendar.getTime();
+        @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:'00' a");
+        date.setTimeZone(TimeZone.getTimeZone("GMT+2:00"));
+
+        String[] h = date.format(currentLocalTime).split(" ");
+
+        return h[0] + "T" + h[1].split(" ")[0] + ":00";
     }
 }

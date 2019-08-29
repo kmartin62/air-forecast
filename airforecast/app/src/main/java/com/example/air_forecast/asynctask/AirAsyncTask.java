@@ -51,7 +51,7 @@ public class AirAsyncTask extends AsyncTask<Void, Void, Void> {
                 Log.d(TAG, "onResponse: received informations " + response.body().toString());
 
                 ArrayList<AirData> airData = response.body().getData();
-                for (int i = 0; i < 30; i++) {
+                for (int i = 0; i < 7; i++) {
                     airDataObject.setAqi(airData.get(i).getAqi());
                     airDataObject.setPm10(airData.get(i).getPm10());
                     airDataObject.setPm25(airData.get(i).getPm25());

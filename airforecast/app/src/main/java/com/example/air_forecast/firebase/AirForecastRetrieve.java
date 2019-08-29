@@ -19,12 +19,17 @@ import android.widget.TextView;
 import com.example.air_forecast.R;
 import com.example.air_forecast.service.AirJobScheduler;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,6 +41,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.TimeZone;
@@ -43,6 +49,8 @@ import java.util.TimeZone;
 import static com.example.air_forecast.fragments.HomeFragment.sharedCity;
 
 public class AirForecastRetrieve {
+
+    private HashMap<String, String> hashMap = new HashMap<>();
 
     public void retrieveData(final String city, String key, final TextView textAqi, final TextView pm10, final TextView pm25,
                              final FrameLayout aqi_frame, final FrameLayout pm10_frame, final FrameLayout pm25_frame, final Activity activity) {
@@ -71,7 +79,7 @@ public class AirForecastRetrieve {
                             }
                             if(currentValue < 100 && currentValue > 51) {
                                 textAqi.setTextColor(Color.BLACK);
-                                aqi_frame.setBackgroundColor(Color.YELLOW);
+                                aqi_frame.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_shape_yellow));
                             }
 
                             if(currentValue < 150 && currentValue > 101) {
@@ -81,12 +89,13 @@ public class AirForecastRetrieve {
 
                             if(currentValue < 200 && currentValue > 151) {
                                 textAqi.setTextColor(Color.WHITE);
-                                aqi_frame.setBackgroundColor(Color.RED);
+                                aqi_frame.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_shape_red));
+
                             }
 
                             if(currentValue < 300 && currentValue > 201) {
                                 textAqi.setTextColor(Color.WHITE);
-                                aqi_frame.setBackgroundColor(Color.parseColor("#800080"));
+                                aqi_frame.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_shape_purple));
                             }
 
                             if(currentValue < 500 && currentValue > 301) {
@@ -162,7 +171,13 @@ public class AirForecastRetrieve {
         });
     }
 
-    public void stringArray(final BarChart barChart, final String param){
+    public void drawBarChart(final BarChart barChart, final String param){
+
+        hashMap.put("Skopje", "Скопје");
+        hashMap.put("Veles", "Велес");
+        hashMap.put("Strumica", "Струмица");
+        hashMap.put("Radovis", "Радовиш");
+
         final ArrayList<String> lista = new ArrayList<>();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(sharedCity);
@@ -182,7 +197,7 @@ public class AirForecastRetrieve {
                 }
                 Log.d("ASASA", String.valueOf(lista.size()));
                 Log.d("HHGHGHG", String.valueOf(barEntries.size()));
-                BarDataSet barDataSet = new BarDataSet(barEntries, "Загадување за секој час");
+                BarDataSet barDataSet = new BarDataSet(barEntries, "Загадување за секој час за " + hashMap.get(sharedCity));
 
                 BarData barData = new BarData(barDataSet);
                 barData.setBarWidth(0.9f);
@@ -206,6 +221,8 @@ public class AirForecastRetrieve {
 
                 barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(hours));
 
+                barChart.setVisibility(View.VISIBLE);
+
                 barChart.invalidate();
             }
 
@@ -215,6 +232,75 @@ public class AirForecastRetrieve {
             }
         });
 
+    }
+
+    public void drawLineChart(final LineChart lineChart, final String param){
+        hashMap.put("Skopje", "Скопје");
+        hashMap.put("Veles", "Велес");
+        hashMap.put("Strumica", "Струмица");
+        hashMap.put("Radovis", "Радовиш");
+
+        final ArrayList<String> lista = new ArrayList<>();
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(sharedCity);
+
+        reference.limitToLast(7).addValueEventListener(new ValueEventListener() {
+            List<Entry> entries = new ArrayList<>();
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot c : dataSnapshot.getChildren()) {
+                    lista.add(c.child(param).getValue().toString());
+                }
+
+                for(int i = 0; i < 7; i ++) {
+                    entries.add(new BarEntry(i+1, Float.parseFloat(lista.get(i))));
+
+                }
+
+                lineChart.setDragEnabled(true);
+                lineChart.setScaleEnabled(false);
+
+                LineDataSet lineDataSet = new LineDataSet(entries, "Загадување за " + hashMap.get(sharedCity));
+                lineDataSet.setFillAlpha(110);
+
+                ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+                dataSets.add(lineDataSet);
+
+                LineData lineData = new LineData(dataSets);
+
+                lineChart.setData(lineData);
+
+//
+//                lineChart.setScaleEnabled(false);
+//                lineChart.setVisibility(View.VISIBLE);
+//                lineChart.animateY(5000);
+//                lineChart.setData(barData);
+//                lineChart.setFitBars(true);
+
+                XAxis xAxis = lineChart.getXAxis();
+                xAxis.setGranularity(1f);
+
+                xAxis.setCenterAxisLabels(true);
+                xAxis.setEnabled(true);
+                xAxis.setDrawGridLines(false);
+                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+
+                String[] hours = hourLabers();
+
+                lineChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(hours));
+
+                lineChart.setVisibility(View.VISIBLE);
+
+                lineChart.invalidate();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private String[] hourLabers(){

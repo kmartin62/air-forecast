@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">air-forecast</string>
+    <string-array name="cities">
+        <item>Скопје</item>
+        <item>Велес</item>
+        <item>Струмица</item>
+        <item>Радовиш</item>
+    </string-array>
+    <string name="aqiinfo">The AQI is an index for reporting daily air quality.
+        It tells you how clean or polluted your air is, and what associated health effects might be a concern for you.
+        The AQI focuses on health effects you may experience within a few hours or days after breathing polluted air.</string>
+    <string name="pm10info">Using a nationwide network of monitoring sites, EPA has developed ambient air quality trends for particle pollution, also called Particulate Matter (PM). PM10 describes inhalable particles, with diameters that are generally 10 micrometers and smaller.
+        Under the Clean Air Act, EPA sets and reviews national air quality standards for PM. </string>
+    <string name="pm25info">Fine particulate matter (PM2.5) is an air pollutant that is a concern for people\'s health when levels in air are high. PM2.5 are tiny particles in the air that reduce visibility and cause the air to appear hazy when levels are elevated.
+        Outdoor PM2.5 levels are most likely to be elevated on days with little or no wind or air mixing. </string>
 </resources>

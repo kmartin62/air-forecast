@@ -5,20 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/home_text2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/home_text3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:text="TextView" />
-
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="wrap_content"
@@ -40,53 +26,96 @@
         android:textSize="35sp" />
 
     <FrameLayout
-        android:id="@+id/frame_aqi"
-        android:layout_width="134dp"
-        android:layout_height="95dp"
-        android:layout_alignParentStart="true"
+        android:layout_width="match_parent"
+        android:layout_height="676dp"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="330dp">
+        android:layout_marginTop="55dp"
+        android:background="@drawable/gradient">
+
+        <FrameLayout
+            android:id="@+id/frame_pm25"
+            android:layout_width="135.9dp"
+            android:layout_height="95dp"
+            android:layout_marginStart="210dp"
+            android:layout_marginTop="250dp">
+
+            <TextView
+                android:id="@+id/home_text3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@+id/frame_pm25"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textSize="35sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/frame_pm10"
+            android:layout_width="136dp"
+            android:layout_height="95dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="250dp">
+
+            <TextView
+                android:id="@+id/home_text2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@+id/frame_pm10"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textSize="35sp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/frame_aqi"
+            android:layout_width="136dp"
+            android:layout_height="95dp"
+            android:layout_marginStart="110dp"
+            android:layout_marginTop="70dp">
+
+            <TextView
+                android:id="@+id/home_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignStart="@+id/frame_aqi"
+                android:layout_alignTop="@+id/frame_aqi"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textSize="35sp" />
+        </FrameLayout>
 
         <TextView
-            android:id="@+id/home_text"
+            android:id="@+id/text_aqi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:layout_marginStart="150dp"
+            android:layout_marginTop="40dp"
+            android:textSize="25sp"/>
+
+        <TextView
+            android:id="@+id/text_pm10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="220dp"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textSize="25sp"/>
+
+        <TextView
+            android:id="@+id/text_pm25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="240dp"
+            android:layout_marginTop="220dp"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textSize="25sp"/>
+
+        <TextView
+            android:id="@+id/infoText"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignTop="@+id/frame_aqi"
-            android:layout_gravity="center"
-            android:textSize="35sp" />
+            android:layout_height="252dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="420dp" />
     </FrameLayout>
-
-    <!--<TextView-->
-        <!--android:id="@+id/textView4"-->
-        <!--android:layout_width="70dp"-->
-        <!--android:layout_height="51dp"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_marginStart="116dp"-->
-        <!--android:layout_marginTop="256dp"-->
-        <!--android:text="AQI: "-->
-        <!--android:textSize="35sp" />-->
-
-    <!--<TextView-->
-        <!--android:id="@+id/textView5"-->
-        <!--android:layout_width="110dp"-->
-        <!--android:layout_height="51dp"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_marginStart="79dp"-->
-        <!--android:layout_marginTop="327dp"-->
-        <!--android:text="PM10:"-->
-        <!--android:textSize="35sp" />-->
-
-    <!--<TextView-->
-        <!--android:id="@+id/textView6"-->
-        <!--android:layout_width="110dp"-->
-        <!--android:layout_height="51dp"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_marginStart="82dp"-->
-        <!--android:layout_marginTop="399dp"-->
-        <!--android:text="PM25:"-->
-        <!--android:textSize="35sp" />-->
 </RelativeLayout>

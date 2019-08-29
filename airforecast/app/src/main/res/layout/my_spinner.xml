@@ -3,6 +3,7 @@
     android:layout_width="match_parent" android:layout_height="wrap_content"
     android:id="@+id/text1"
     android:maxLines="1"
-    android:textSize="24sp">
+    android:textSize="24sp"
+    android:textColor="@color/common_google_signin_btn_text_dark_focused">
 
 </TextView>

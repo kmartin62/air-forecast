@@ -25,7 +25,7 @@ import java.util.Objects;
 public class AirForecastRetrieve {
 
     public void retrieveData(final String city, String key, final TextView textAqi, final TextView pm10, final TextView pm25,
-                             final FrameLayout frame, final Activity activity) {
+                             final FrameLayout aqi_frame, final FrameLayout pm10_frame, final FrameLayout pm25_frame, final Activity activity) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(city).child(key);
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -37,38 +37,100 @@ public class AirForecastRetrieve {
                 }
                 else {
                     String aqi = Objects.requireNonNull(dataSnapshot.child("aqi").getValue()).toString();
-//                    textAqi.setText(aqi);
                     final int n = Integer.parseInt(String.valueOf(aqi.split("\\.")[0]));
-//
-//                    textAqi.setText(String.valueOf(n));
-//
-//                    Log.d("AIRFORECAST", aqi);
 
                     ValueAnimator animator = ValueAnimator.ofInt(0, n);
-                    animator.setDuration(5000);
+                    animator.setDuration(2000);
                     animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         public void onAnimationUpdate(ValueAnimator animation) {
                             int currentValue = Integer.parseInt(animation.getAnimatedValue().toString());
                             textAqi.setText(animation.getAnimatedValue().toString());
                             if(currentValue < 50 && currentValue > 0) {
                                 textAqi.setTextColor(Color.BLACK);
-                                textAqi.setText("AQI: " + String.valueOf(currentValue));
-                                frame.setBackgroundColor(Color.GREEN);
+                                aqi_frame.setBackgroundColor(Color.GREEN);
                             }
                             if(currentValue < 100 && currentValue > 51) {
                                 textAqi.setTextColor(Color.BLACK);
-                                textAqi.setText("AQI: " + String.valueOf(currentValue));
-                                frame.setBackgroundColor(Color.YELLOW);
+                                aqi_frame.setBackgroundColor(Color.YELLOW);
                             }
 
                             if(currentValue < 150 && currentValue > 101) {
                                 textAqi.setTextColor(Color.WHITE);
-                                textAqi.setText("AQI: " + String.valueOf(currentValue));
-                                frame.setBackgroundColor(Color.parseColor("#FFA500"));
+                                aqi_frame.setBackgroundColor(Color.parseColor("#FFA500"));
+                            }
+
+                            if(currentValue < 200 && currentValue > 151) {
+                                textAqi.setTextColor(Color.WHITE);
+                                aqi_frame.setBackgroundColor(Color.RED);
+                            }
+
+                            if(currentValue < 300 && currentValue > 201) {
+                                textAqi.setTextColor(Color.WHITE);
+                                aqi_frame.setBackgroundColor(Color.parseColor("#800080"));
+                            }
+
+                            if(currentValue < 500 && currentValue > 301) {
+                                textAqi.setTextColor(Color.WHITE);
+                                aqi_frame.setBackgroundColor(Color.parseColor("#800000"));
                             }
                         }
                     });
                     animator.start();
+
+                    //@TODO: Fix pm10 and pm25 danger ranges
+
+                    aqi = Objects.requireNonNull(dataSnapshot.child("pm10").getValue()).toString();
+                    final int m = Integer.parseInt(String.valueOf(aqi.split("\\.")[0]));
+
+                    ValueAnimator animator1 = ValueAnimator.ofInt(0, m);
+                    animator1.setDuration(2000);
+                    animator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            int currentValue = Integer.parseInt(animation.getAnimatedValue().toString());
+                            pm10.setText(animation.getAnimatedValue().toString());
+                            if(currentValue < 20 && currentValue > 0) {
+                                pm10.setTextColor(Color.BLACK);
+                                pm10_frame.setBackgroundColor(Color.GREEN);
+                            }
+                            if(currentValue < 50 && currentValue > 20) {
+                                pm10.setTextColor(Color.BLACK);
+                                pm10_frame.setBackgroundColor(Color.parseColor("#FFA500"));
+                            }
+
+                            if(currentValue > 50) {
+                                pm10.setTextColor(Color.WHITE);
+                                pm10_frame.setBackgroundColor(Color.parseColor("#800000"));
+
+                            }
+                        }
+                    });
+                    animator1.start();
+
+                    aqi = Objects.requireNonNull(dataSnapshot.child("pm25").getValue()).toString();
+                    final int b = Integer.parseInt(String.valueOf(aqi.split("\\.")[0]));
+
+                    ValueAnimator animator2 = ValueAnimator.ofInt(0, b);
+                    animator2.setDuration(2000);
+                    animator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            int currentValue = Integer.parseInt(animation.getAnimatedValue().toString());
+                            pm25.setText(animation.getAnimatedValue().toString());
+                            if(currentValue < 10 && currentValue > 0) {
+                                pm25.setTextColor(Color.BLACK);
+                                pm25_frame.setBackgroundColor(Color.GREEN);
+                            }
+                            if(currentValue < 25 && currentValue > 10) {
+                                pm25.setTextColor(Color.BLACK);
+                                pm25_frame.setBackgroundColor(Color.parseColor("#FFA500"));
+                            }
+
+                            if(currentValue > 25) {
+                                pm25.setTextColor(Color.WHITE);
+                                pm25_frame.setBackgroundColor(Color.parseColor("#800000"));
+                            }
+                        }
+                    });
+                    animator2.start();
 //
 //                    ValueAnimator animator = ValueAnimator.ofInt(0, n);
 //                    animator.setDuration(2000);

@@ -50,29 +50,65 @@ public class GraphFragment extends Fragment {
     private Button btnBar;
     private Button btnLine;
     private String parameter;
+    private Description description;
+    private Description lineDescription;
+    private AirForecastRetrieve airForecastRetrieve;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View myInflatedView = inflater.inflate(R.layout.fragment_graph, container, false);
 
-        final AirForecastRetrieve airForecastRetrieve = new AirForecastRetrieve();
+        airForecastRetrieve = new AirForecastRetrieve();
         btnBar = myInflatedView.findViewById(R.id.btnBar);
         btnLine = myInflatedView.findViewById(R.id.btnLine);
 
         barChart = myInflatedView.findViewById(R.id.barChart);
         lineChart = myInflatedView.findViewById(R.id.lineChart);
         spinner = myInflatedView.findViewById(R.id.spinner3);
-        final Description description = new Description();
-        final Description lineDescription = new Description();
+        description = new Description();
+        lineDescription = new Description();
 
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, items);
+        adapter = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, items);
         spinner.setAdapter(adapter);
 
         barChart.setDescription(description);
         lineChart.setDescription(lineDescription);
 
 
+
+
+        btnBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                barChartClick();
+            }
+        });
+
+        btnLine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lineChartClick();
+            }
+        });
+
+        return myInflatedView;
+    }
+
+    private void barChartClick(){
+        lineChart.setVisibility(View.INVISIBLE);
+        airForecastRetrieve.drawBarChart(barChart, parameter);
+        chartBoolean = false;
+    }
+
+    private void lineChartClick(){
+        barChart.setVisibility(View.INVISIBLE);
+        airForecastRetrieve.drawLineChart(lineChart, parameter);
+        chartBoolean = true;
+    }
+
+    @Override
+    public void onStart() {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -94,26 +130,8 @@ public class GraphFragment extends Fragment {
 
             }
         });
+        super.onStart();
 
-        btnBar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                lineChart.setVisibility(View.INVISIBLE);
-                airForecastRetrieve.drawBarChart(barChart, parameter);
-                chartBoolean = false;
-            }
-        });
-
-        btnLine.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                barChart.setVisibility(View.INVISIBLE);
-                airForecastRetrieve.drawLineChart(lineChart, parameter);
-                chartBoolean = true;
-            }
-        });
-
-        return myInflatedView;
     }
 
     private String getKey(){

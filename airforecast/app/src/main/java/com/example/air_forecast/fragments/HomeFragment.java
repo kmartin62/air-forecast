@@ -63,7 +63,7 @@ public class HomeFragment extends Fragment {
 
 
         View myInflatedView = inflater.inflate(R.layout.fragment_home, container, false);
-        
+
         if(!isConnected(getContext())) {
             builder(getContext()).show();
             return inflater.inflate(R.layout.offline, container, false);

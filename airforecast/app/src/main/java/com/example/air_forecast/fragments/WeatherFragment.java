@@ -1,6 +1,7 @@
 package com.example.air_forecast.fragments;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,6 +34,18 @@ public class WeatherFragment extends Fragment {
 
         View myInflatedView = inflater.inflate(R.layout.fragment_weather, container, false);
         final WeatherForecastRetrieve weatherForecastRetrieve = new WeatherForecastRetrieve();
+
+//        CircularSeekBar circularSeekBar = myInflatedView.findViewById(R.id.seekBar);
+
+//        ArcSeekBar seekBar = myInflatedView.findViewById(R.id.seekBarArc);
+//        seekBar.setMaxProgress(100);
+//
+//        seekBar.setProgress(50);
+
+//        circularSeekBar.setProgressTextFormat("###,###,##0,00");
+
+//        circularSeekBar.setRingColor(Color.GREEN);
+//        circularSeekBar.setProgress(45);
 
         final TextView txtView = myInflatedView.findViewById(R.id.weather_text);
 //        txtView.setText(getKey());

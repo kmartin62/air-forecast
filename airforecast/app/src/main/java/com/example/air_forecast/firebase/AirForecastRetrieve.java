@@ -35,6 +35,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.marcinmoskala.arcseekbar.ArcSeekBar;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -53,7 +54,8 @@ public class AirForecastRetrieve {
     private HashMap<String, String> hashMap = new HashMap<>();
 
     public void retrieveData(final String city, String key, final TextView textAqi, final TextView pm10, final TextView pm25,
-                             final FrameLayout aqi_frame, final FrameLayout pm10_frame, final FrameLayout pm25_frame, final Activity activity) {
+                             final Activity activity, final ArcSeekBar arcSeekBarAqi, final ArcSeekBar arcSeekBarPm10,
+                             final ArcSeekBar arcSeekBarPm25) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(city).child(key);
 
         reference.addValueEventListener(new ValueEventListener() {
@@ -72,35 +74,36 @@ public class AirForecastRetrieve {
                     animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         public void onAnimationUpdate(ValueAnimator animation) {
                             int currentValue = Integer.parseInt(animation.getAnimatedValue().toString());
+
                             textAqi.setText(animation.getAnimatedValue().toString());
+                            textAqi.setTextColor(Color.WHITE);
+
+
+                            if(currentValue <= 100) {
+                                arcSeekBarAqi.setProgress(currentValue);
+                            }
+
                             if(currentValue < 50 && currentValue > 0) {
-                                textAqi.setTextColor(Color.BLACK);
-                                aqi_frame.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_shape_green));
+                                arcSeekBarAqi.setProgressColor(Color.GREEN);
                             }
                             if(currentValue < 100 && currentValue > 51) {
-                                textAqi.setTextColor(Color.BLACK);
-                                aqi_frame.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_shape_yellow));
+                                arcSeekBarAqi.setProgressColor(Color.YELLOW);
                             }
 
                             if(currentValue < 150 && currentValue > 101) {
-                                textAqi.setTextColor(Color.WHITE);
-                                aqi_frame.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_shape_orange));
+                                arcSeekBarAqi.setProgressColor(Color.parseColor("#FF4500"));
                             }
 
                             if(currentValue < 200 && currentValue > 151) {
-                                textAqi.setTextColor(Color.WHITE);
-                                aqi_frame.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_shape_red));
-
+                                arcSeekBarAqi.setProgressColor(Color.RED);
                             }
 
                             if(currentValue < 300 && currentValue > 201) {
-                                textAqi.setTextColor(Color.WHITE);
-                                aqi_frame.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_shape_purple));
+                                arcSeekBarAqi.setProgressColor(Color.parseColor("#551A8B")); //purple
                             }
 
                             if(currentValue < 500 && currentValue > 301) {
-                                textAqi.setTextColor(Color.WHITE);
-                                aqi_frame.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_shape_maroon));
+                                arcSeekBarAqi.setProgressColor(Color.parseColor("#800000")); //maroon
 
                             }
                         }
@@ -115,20 +118,21 @@ public class AirForecastRetrieve {
                     animator1.setDuration(2000);
                     animator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                         public void onAnimationUpdate(ValueAnimator animation) {
+                            pm10.setTextColor(Color.WHITE);
                             int currentValue = Integer.parseInt(animation.getAnimatedValue().toString());
                             pm10.setText(animation.getAnimatedValue().toString());
+                            if(currentValue <= 50) {
+                                arcSeekBarPm10.setProgress(currentValue);
+                            }
                             if(currentValue < 20 && currentValue > 0) {
-                                pm10.setTextColor(Color.BLACK);
-                                pm10_frame.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_shape_green));
+                                arcSeekBarPm10.setProgressColor(Color.GREEN);
                             }
                             if(currentValue < 50 && currentValue > 20) {
-                                pm10.setTextColor(Color.WHITE);
-                                pm10_frame.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_shape_orange));
+                                arcSeekBarPm10.setProgressColor(Color.YELLOW);
                             }
 
                             if(currentValue > 50) {
-                                pm10.setTextColor(Color.WHITE);
-                                pm10_frame.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_shape_maroon));
+                                arcSeekBarPm10.setProgressColor(Color.parseColor("#800000"));
 
                             }
                         }
@@ -144,18 +148,19 @@ public class AirForecastRetrieve {
                         public void onAnimationUpdate(ValueAnimator animation) {
                             int currentValue = Integer.parseInt(animation.getAnimatedValue().toString());
                             pm25.setText(animation.getAnimatedValue().toString());
+                            if(currentValue <= 25) {
+                                arcSeekBarPm25.setProgress(currentValue);
+                            }
+
                             if(currentValue < 10 && currentValue > 0) {
-                                pm25.setTextColor(Color.BLACK);
-                                pm25_frame.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_shape_green));
+                                arcSeekBarPm25.setProgressColor(Color.GREEN);
                             }
                             if(currentValue < 25 && currentValue > 10) {
-                                pm25.setTextColor(Color.WHITE);
-                                pm25_frame.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_shape_orange));
+                                arcSeekBarPm25.setProgressColor(Color.YELLOW);
                             }
 
                             if(currentValue > 25) {
-                                pm25.setTextColor(Color.WHITE);
-                                pm25_frame.setBackground(ContextCompat.getDrawable(activity.getApplicationContext(), R.drawable.rounded_shape_maroon));
+                                arcSeekBarPm25.setProgressColor(Color.parseColor("#800000"));
                             }
                         }
                     });

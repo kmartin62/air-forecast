@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.example.air_forecast.R;
 import com.example.air_forecast.firebase.AirForecastRetrieve;
+import com.marcinmoskala.arcseekbar.ArcSeekBar;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -45,7 +46,7 @@ public class HomeFragment extends Fragment {
     private String myCity;
     private ArrayAdapter<String> adapter;
     private Spinner dropDown;
-    private FrameLayout aqi_frame, pm10_frame, pm25_frame;
+    private FrameLayout pm10_frame, pm25_frame, aqi_frame;
 //    private static String[] items = new String[]{"Skopje", "Veles", "Strumica", "Radovis"};
     final AirForecastRetrieve airForecastRetrieve = new AirForecastRetrieve();
 
@@ -53,9 +54,11 @@ public class HomeFragment extends Fragment {
     private TextView txtViewPm10;
     private TextView txtViewPm25;
     private TextView text_aqi;
+    private TextView txt3;
     private TextView text_pm10;
     private TextView text_pm25;
     private TextView info_text;
+    private ArcSeekBar arcSeekBar, arcSeekBarPm10, arcSeekBarPm25;
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
     @Override
@@ -70,17 +73,29 @@ public class HomeFragment extends Fragment {
         }
 
 
+        arcSeekBar = myInflatedView.findViewById(R.id.seekBarArc1);
+        arcSeekBarPm10 = myInflatedView.findViewById(R.id.seekBarArc12);
+        arcSeekBarPm25 = myInflatedView.findViewById(R.id.seekBarArc123);
+
+        arcSeekBarPm10.setEnabled(false);
+        arcSeekBarPm25.setEnabled(false);
+        arcSeekBar.setEnabled(false);
+        arcSeekBar.setMaxProgress(100);
+        arcSeekBarPm10.setMaxProgress(50);
+        arcSeekBarPm25.setMaxProgress(25);
         hashMap = new HashMap<>();
         initMap();
+
+
 
         txtViewAqi = myInflatedView.findViewById(R.id.home_text);
         txtViewPm10 = myInflatedView.findViewById(R.id.home_text2);
         txtViewPm25 = myInflatedView.findViewById(R.id.home_text3);
-        text_aqi = myInflatedView.findViewById(R.id.text_aqi);
+
         text_pm10 = myInflatedView.findViewById(R.id.text_pm10);
         text_pm25 = myInflatedView.findViewById(R.id.text_pm25);
+        text_aqi = myInflatedView.findViewById(R.id.text_aqi);
         info_text = myInflatedView.findViewById(R.id.infoText);
-
 
         aqi_frame = myInflatedView.findViewById(R.id.frame_aqi);
         pm10_frame = myInflatedView.findViewById(R.id.frame_pm10);
@@ -167,31 +182,6 @@ public class HomeFragment extends Fragment {
     public void onStart() {
 
         if(isConnected(getContext())) {
-
-            aqi_frame.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    info_text.setText(getString(R.string.aqiinfo));
-                    info_text.setTextColor(Color.WHITE);
-                }
-            });
-
-            pm10_frame.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    info_text.setText(getString(R.string.pm10info));
-                    info_text.setTextColor(Color.WHITE);
-                }
-            });
-
-            pm25_frame.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    info_text.setText(getString(R.string.pm25info));
-                    info_text.setTextColor(Color.WHITE);
-                }
-            });
-
             init();
 
             dropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -201,8 +191,8 @@ public class HomeFragment extends Fragment {
                     sharedCity = hashMap.get(parent.getItemAtPosition(position).toString());
                     airForecastRetrieve.checkIfExists(getKey7(), getActivity());
                     myCity = sharedCity;
-                    airForecastRetrieve.retrieveData(myCity, getKey(), txtViewAqi, txtViewPm10, txtViewPm25, aqi_frame,
-                            pm10_frame, pm25_frame, getActivity());
+                    airForecastRetrieve.retrieveData(myCity, getKey(), txtViewAqi, txtViewPm10, txtViewPm25,
+                            getActivity(), arcSeekBar, arcSeekBarPm10, arcSeekBarPm25);
 
                 }
 
@@ -221,9 +211,6 @@ public class HomeFragment extends Fragment {
         adapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), R.layout.my_spinner, res.getStringArray(R.array.cities));
         dropDown.setAdapter(adapter);
 
-        aqi_frame.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_shape_green));
-        pm10_frame.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_shape_green));
-        pm25_frame.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_shape_green));
 
 
         text_aqi.setText("AQI");
@@ -232,17 +219,14 @@ public class HomeFragment extends Fragment {
     }
 
     private void initFrames(){
-        aqi_frame.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_shape_green));
-        pm10_frame.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_shape_green));
-        pm25_frame.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.rounded_shape_green));
 
         txtViewAqi.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
         txtViewPm10.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
         txtViewPm25.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 
-        txtViewAqi.setTextColor(Color.BLACK);
-        txtViewPm10.setTextColor(Color.BLACK);
-        txtViewPm25.setTextColor(Color.BLACK);
+        txtViewAqi.setTextColor(Color.WHITE);
+        txtViewPm10.setTextColor(Color.WHITE);
+        txtViewPm25.setTextColor(Color.WHITE);
     }
 
     @Override
@@ -264,4 +248,5 @@ public class HomeFragment extends Fragment {
 
         return h[0] + "T" + h[1].split(" ")[0] + ":00";
     }
+
 }

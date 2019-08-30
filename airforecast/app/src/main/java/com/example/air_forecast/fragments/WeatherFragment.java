@@ -1,11 +1,13 @@
 package com.example.air_forecast.fragments;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.air_forecast.R;
 import com.example.air_forecast.firebase.WeatherForecastRetrieve;
+import com.marcinmoskala.arcseekbar.ArcSeekBar;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -37,10 +40,21 @@ public class WeatherFragment extends Fragment {
 
 //        CircularSeekBar circularSeekBar = myInflatedView.findViewById(R.id.seekBar);
 
-//        ArcSeekBar seekBar = myInflatedView.findViewById(R.id.seekBarArc);
-//        seekBar.setMaxProgress(100);
-//
-//        seekBar.setProgress(50);
+        final ArcSeekBar seekBar = myInflatedView.findViewById(R.id.seekBarArc);
+        seekBar.setClickable(false);
+        seekBar.setEnabled(false);
+        seekBar.setMaxProgress(100);
+
+        ValueAnimator animator2 = ValueAnimator.ofInt(0, 50);
+        animator2.setDuration(2000);
+        animator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int currentValue = Integer.parseInt(animation.getAnimatedValue().toString());
+                seekBar.setProgress(currentValue);
+
+            }
+        });
+        animator2.start();
 
 //        circularSeekBar.setProgressTextFormat("###,###,##0,00");
 

@@ -203,8 +203,7 @@ public class AirForecastRetrieve {
                 barData.setBarWidth(0.9f);
 
                 barChart.setScaleEnabled(false);
-                barChart.setVisibility(View.VISIBLE);
-                barChart.animateY(5000);
+                barChart.animateY(1000);
                 barChart.setData(barData);
                 barChart.setFitBars(true);
 
@@ -270,13 +269,6 @@ public class AirForecastRetrieve {
                 LineData lineData = new LineData(dataSets);
 
                 lineChart.setData(lineData);
-
-//
-//                lineChart.setScaleEnabled(false);
-//                lineChart.setVisibility(View.VISIBLE);
-//                lineChart.animateY(5000);
-//                lineChart.setData(barData);
-//                lineChart.setFitBars(true);
 
                 XAxis xAxis = lineChart.getXAxis();
                 xAxis.setGranularity(1f);

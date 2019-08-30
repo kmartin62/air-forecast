@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.air_forecast.R;
 import com.example.air_forecast.firebase.AirForecastRetrieve;
@@ -63,6 +64,8 @@ public class HomeFragment extends Fragment {
 
         View myInflatedView = inflater.inflate(R.layout.fragment_home, container, false);
 
+        Toast.makeText(getActivity(), "OnCreate", Toast.LENGTH_SHORT).show();
+
         if(!isConnected(getContext())) {
             builder(getContext()).show();
             return inflater.inflate(R.layout.offline, container, false);
@@ -90,6 +93,13 @@ public class HomeFragment extends Fragment {
 
         return myInflatedView;
     }
+
+    @Override
+    public void onResume() {
+//        Toast.makeText(getActivity(), "onResume", Toast.LENGTH_SHORT).show();
+        super.onResume();
+    }
+
     private boolean isConnected(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();

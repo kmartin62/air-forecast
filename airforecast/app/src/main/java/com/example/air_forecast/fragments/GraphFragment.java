@@ -76,7 +76,6 @@ public class GraphFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                airForecastRetrieve.checkIfExists(parent.getItemAtPosition(position).toString(), getKey(), getActivity());
                 parameter = parent.getItemAtPosition(position).toString();
                 if(!chartBoolean) {
                     airForecastRetrieve.drawBarChart(barChart, parent.getItemAtPosition(position).toString());

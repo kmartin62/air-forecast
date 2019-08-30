@@ -312,8 +312,8 @@ public class AirForecastRetrieve {
         return keys;
     }
 
-    public void checkIfExists(String param, String key, final Activity activity){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(sharedCity).child(key).child(param);
+    public void checkIfExists(String key, final Activity activity){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child(sharedCity).child(key);
 
 
         reference.addValueEventListener(new ValueEventListener() {

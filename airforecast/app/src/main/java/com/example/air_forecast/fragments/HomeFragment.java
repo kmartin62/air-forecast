@@ -41,7 +41,7 @@ import java.util.TimeZone;
 public class HomeFragment extends Fragment {
 
     private HashMap<String, String> hashMap;
-    public static String sharedCity;
+    public static String sharedCity = "Skopje";
     private String myCity;
     private ArrayAdapter<String> adapter;
     private Spinner dropDown;
@@ -63,9 +63,7 @@ public class HomeFragment extends Fragment {
 
 
         View myInflatedView = inflater.inflate(R.layout.fragment_home, container, false);
-
-        Toast.makeText(getActivity(), "OnCreate", Toast.LENGTH_SHORT).show();
-
+        
         if(!isConnected(getContext())) {
             builder(getContext()).show();
             return inflater.inflate(R.layout.offline, container, false);
@@ -90,6 +88,9 @@ public class HomeFragment extends Fragment {
 
 
         dropDown = myInflatedView.findViewById(R.id.spinner);
+
+        airForecastRetrieve.checkIfExists(getKey7(), getActivity());
+
 
         return myInflatedView;
     }
@@ -198,6 +199,7 @@ public class HomeFragment extends Fragment {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     initFrames();
                     sharedCity = hashMap.get(parent.getItemAtPosition(position).toString());
+                    airForecastRetrieve.checkIfExists(getKey7(), getActivity());
                     myCity = sharedCity;
                     airForecastRetrieve.retrieveData(myCity, getKey(), txtViewAqi, txtViewPm10, txtViewPm25, aqi_frame,
                             pm10_frame, pm25_frame, getActivity());
@@ -209,14 +211,6 @@ public class HomeFragment extends Fragment {
                     //do something
                 }
             });
-
-//        if(!connectedToNetwork) {
-//            Toast.makeText(getActivity(), "Please check your network connection", Toast.LENGTH_SHORT).show();
-//        }
-
-//        if(!connectedToNetwork) {
-//            Toast.makeText(getActivity(), "Please check your network connection", Toast.LENGTH_SHORT).show();
-//        }
         }
 
         super.onStart();
@@ -257,5 +251,17 @@ public class HomeFragment extends Fragment {
         myCity = sharedCity;
 
         super.onStop();
+    }
+
+    private String getKey7(){
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2:00"));
+        calendar.add(Calendar.HOUR_OF_DAY, 7);
+        Date currentLocalTime = calendar.getTime();
+        @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:'00' a");
+        date.setTimeZone(TimeZone.getTimeZone("GMT+2:00"));
+
+        String[] h = date.format(currentLocalTime).split(" ");
+
+        return h[0] + "T" + h[1].split(" ")[0] + ":00";
     }
 }

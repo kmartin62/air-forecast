@@ -30,6 +30,7 @@ import com.example.air_forecast.fragments.GraphFragment;
 import com.example.air_forecast.fragments.HomeFragment;
 import com.example.air_forecast.fragments.WeatherFragment;
 import com.example.air_forecast.service.AirJobScheduler;
+import com.example.air_forecast.service.AirNowJobScheduler;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -72,19 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         broadcastReceiver = new NetworkChangeReceiver();
 
-//        registerNetworkBroadcastForNougat();
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setSelectedItemId(R.id.nav_home);
-        bottomNav.setOnNavigationItemSelectedListener(navListener);
-
-
-
-
-        
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Skopje").child(getKey());
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("SkopjeN").child(getKey());
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -99,6 +88,20 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+//        registerNetworkBroadcastForNougat();
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setSelectedItemId(R.id.nav_home);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+
+
+
+        
+
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
 
@@ -142,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void scheduleJob() {
-        ComponentName componentName = new ComponentName(Objects.requireNonNull(this), AirJobScheduler.class);
+        ComponentName componentName = new ComponentName(Objects.requireNonNull(this), AirNowJobScheduler.class);
         JobInfo jobInfo = new JobInfo.Builder(1456759824, componentName)
                 .setPersisted(true)
                 .setPeriodic(1000 * 60 * 15) //15 minuti

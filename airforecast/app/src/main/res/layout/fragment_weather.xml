@@ -13,39 +13,147 @@
         android:textSize="30sp"
         android:visibility="invisible" />
 
-    <Spinner
-        android:id="@+id/spinner2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="invisible" />
-
     <com.marcinmoskala.arcseekbar.ArcSeekBar
-        android:id="@+id/seekBarArc"
-        android:layout_width="300dp"
+        android:id="@+id/seekBarArcWeather"
+        android:layout_width="250dp"
         android:layout_height="150dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="79dp"
+        android:layout_marginStart="59dp"
         android:layout_marginTop="64dp" />
-
 
 
     <pl.droidsonroids.gif.GifImageView
         android:layout_width="155dp"
         android:layout_height="283dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="323dp"
+        android:layout_marginTop="436dp"
         android:background="@android:color/background_light"
         android:src="@drawable/windmill" />
 
+    <TextView
+        android:id="@+id/textDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="119dp"
+        android:textSize="26dp" />
 
+    <TextView
+        android:id="@+id/textHour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="165dp"
+        android:textSize="20dp" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="220dp"
+        android:background="#c0c0c0" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="390dp"
+        android:background="#c0c0c0" />
+
+    <TextView
+        android:id="@+id/textComfort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="234dp" />
+
+    <TextView
+        android:id="@+id/textWind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="400dp" />
+
+    <TextView
+        android:id="@+id/txtPressure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="265dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/txtTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="313dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/txtUv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="420dp"
+        android:layout_marginEnd="15dp"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/txtDirection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="464dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/txtSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="505dp"
+        android:layout_marginEnd="15dp"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/txtInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="15dp"/>
 
 
     <!--<FrameLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_marginTop="0dp">-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_marginTop="0dp">-->
 
     <!--</FrameLayout>-->
 </RelativeLayout>

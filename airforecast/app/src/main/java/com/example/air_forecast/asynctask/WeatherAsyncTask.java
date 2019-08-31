@@ -60,6 +60,8 @@ public class WeatherAsyncTask extends AsyncTask<Void, Void, Void> {
                     weatherDataObject.setUv(weatherData.get(i).getUv());
                     weatherDataObject.setWind_cdir(weatherData.get(i).getWind_cdir());
                     weatherDataObject.setWind_spd(weatherData.get(i).getWind_spd());
+                    weatherDataObject.setPres(weatherData.get(i).getPres());
+                    weatherDataObject.setTemp(weatherData.get(i).getTemp());
 
                     reference.child(weatherData.get(i).getDatetime()).setValue(weatherDataObject);
 

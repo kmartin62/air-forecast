@@ -21,6 +21,30 @@ public class WeatherData {
     @Expose
     private String datetime;
 
+    @SerializedName("pres")
+    @Expose
+    private float pres;
+
+    @SerializedName("temp")
+    @Expose
+    private float temp;
+
+    public float getTemp() {
+        return temp;
+    }
+
+    public void setTemp(float temp) {
+        this.temp = temp;
+    }
+
+    public float getPres() {
+        return pres;
+    }
+
+    public void setPres(float pres) {
+        this.pres = pres;
+    }
+
     public String getDatetime() {
         return datetime;
     }

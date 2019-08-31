@@ -25,7 +25,27 @@ import java.util.Calendar;
 import java.util.Objects;
 import java.util.TimeZone;
 
+import static com.example.air_forecast.fragments.HomeFragment.sharedCity;
+
 public class WeatherFragment extends Fragment {
+
+    private TextView txtDate;
+    private TextView txtHour;
+
+    private TextView txtComfort;
+    private TextView txtWind;
+
+    private TextView txtPres;
+    private TextView txtTemp;
+
+    private TextView txtUv;
+    private TextView txtDirection;
+    private TextView txtSpeed;
+
+    private TextView txtInfo;
+
+    private ArcSeekBar seekBar;
+
 
     private static String[] items = new String[]{"uv", "wind_cdir", "wind_spd"};
     private ArrayAdapter<String> adapter;
@@ -38,50 +58,31 @@ public class WeatherFragment extends Fragment {
         View myInflatedView = inflater.inflate(R.layout.fragment_weather, container, false);
         final WeatherForecastRetrieve weatherForecastRetrieve = new WeatherForecastRetrieve();
 
-//        CircularSeekBar circularSeekBar = myInflatedView.findViewById(R.id.seekBar);
+        txtHour = myInflatedView.findViewById(R.id.textHour);
+        txtDate = myInflatedView.findViewById(R.id.textDate);
+        txtPres = myInflatedView.findViewById(R.id.txtPressure);
+        txtTemp = myInflatedView.findViewById(R.id.txtTemp);
+        txtUv = myInflatedView.findViewById(R.id.txtUv);
+        txtDirection = myInflatedView.findViewById(R.id.txtDirection);
+        txtSpeed = myInflatedView.findViewById(R.id.txtSpeed);
 
-        final ArcSeekBar seekBar = myInflatedView.findViewById(R.id.seekBarArc);
-        seekBar.setClickable(false);
+        txtComfort = myInflatedView.findViewById(R.id.textComfort);
+        txtWind = myInflatedView.findViewById(R.id.textWind);
+
+        txtInfo = myInflatedView.findViewById(R.id.txtInfo);
+
+        txtInfo.setText("*информации за " + sharedCity);
+
+        txtComfort.setText("НИВО НА КОМФОРТ");
+        txtWind.setText("НИВО НА ВЕТАР");
+
+
+        seekBar = myInflatedView.findViewById(R.id.seekBarArcWeather);
         seekBar.setEnabled(false);
-        seekBar.setMaxProgress(100);
+        seekBar.setMaxProgress(23);
 
-        ValueAnimator animator2 = ValueAnimator.ofInt(0, 50);
-        animator2.setDuration(2000);
-        animator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int currentValue = Integer.parseInt(animation.getAnimatedValue().toString());
-                seekBar.setProgress(currentValue);
-
-            }
-        });
-        animator2.start();
-
-//        circularSeekBar.setProgressTextFormat("###,###,##0,00");
-
-//        circularSeekBar.setRingColor(Color.GREEN);
-//        circularSeekBar.setProgress(45);
-
-        final TextView txtView = myInflatedView.findViewById(R.id.weather_text);
-//        txtView.setText(getKey());
-        spinner = myInflatedView.findViewById(R.id.spinner2);
-
-        adapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()), android.R.layout.simple_spinner_item, items);
-
-        spinner.setAdapter(adapter);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                weatherForecastRetrieve.retrieveData(HomeFragment.sharedCity, getKey(), (String) parent.getItemAtPosition(position), txtView, getActivity());
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
+        weatherForecastRetrieve.retrieveData(sharedCity, getKey(), txtHour,
+                txtDate, txtPres, txtTemp, txtUv, txtDirection, txtSpeed, seekBar, getActivity());
 
 
         return myInflatedView;

@@ -74,7 +74,7 @@ public class WeatherFragment extends Fragment {
         txtInfo.setText("*информации за " + sharedCity);
 
         txtComfort.setText("НИВО НА КОМФОРТ");
-        txtWind.setText("НИВО НА ВЕТАР");
+        txtWind.setText("НИВО НА ВЕТEР");
 
 
         seekBar = myInflatedView.findViewById(R.id.seekBarArcWeather);

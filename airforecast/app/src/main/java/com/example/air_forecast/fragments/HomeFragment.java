@@ -28,7 +28,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.air_forecast.R;
+import com.example.air_forecast.asynctask.AirAsyncTask;
+import com.example.air_forecast.asynctask.AirNowAsyncTask;
 import com.example.air_forecast.firebase.AirForecastRetrieve;
+import com.example.air_forecast.firebase.AirNowRetrieve;
 import com.marcinmoskala.arcseekbar.ArcSeekBar;
 
 import java.text.DateFormat;
@@ -46,6 +49,7 @@ public class HomeFragment extends Fragment {
     private String myCity;
     private ArrayAdapter<String> adapter;
     private Spinner dropDown;
+    private AirNowRetrieve airNowRetrieve = new AirNowRetrieve();
     private FrameLayout pm10_frame, pm25_frame, aqi_frame;
 //    private static String[] items = new String[]{"Skopje", "Veles", "Strumica", "Radovis"};
     final AirForecastRetrieve airForecastRetrieve = new AirForecastRetrieve();
@@ -71,6 +75,9 @@ public class HomeFragment extends Fragment {
             builder(getContext()).show();
             return inflater.inflate(R.layout.offline, container, false);
         }
+
+//        AirNowAsyncTask airNowAsyncTask = new AirNowAsyncTask(sharedCity);
+//        airNowAsyncTask.execute();
 
 
         arcSeekBar = myInflatedView.findViewById(R.id.seekBarArc1);
@@ -162,7 +169,7 @@ public class HomeFragment extends Fragment {
 
     private String getKey(){
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2:00"));
-        calendar.add(Calendar.HOUR_OF_DAY, 1);
+//        calendar.add(Calendar.HOUR_OF_DAY, 1);
         Date currentLocalTime = calendar.getTime();
         @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("HH:'00' a");
         date.setTimeZone(TimeZone.getTimeZone("GMT+2:00"));
@@ -191,7 +198,7 @@ public class HomeFragment extends Fragment {
                     sharedCity = hashMap.get(parent.getItemAtPosition(position).toString());
                     airForecastRetrieve.checkIfExists(getKey7(), getActivity());
                     myCity = sharedCity;
-                    airForecastRetrieve.retrieveData(myCity, getKey(), txtViewAqi, txtViewPm10, txtViewPm25,
+                    airNowRetrieve.retrieveData(myCity, getKey(), txtViewAqi, txtViewPm10, txtViewPm25,
                             getActivity(), arcSeekBar, arcSeekBarPm10, arcSeekBarPm25);
 
                 }

@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean isClicked;
     private BroadcastReceiver broadcastReceiver;
     private BottomNavigationView bottomNav;
+    private int itemId;
 
     public static void dialog(boolean value) {
         if(value) {
@@ -71,13 +72,15 @@ public class MainActivity extends AppCompatActivity {
 
         broadcastReceiver = new NetworkChangeReceiver();
 
-        registerNetworkBroadcastForNougat();
+//        registerNetworkBroadcastForNougat();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(navListener);
         bottomNav.setSelectedItemId(R.id.nav_home);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+
 
 
         
@@ -171,29 +174,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        Fragment selectedFragment = null;
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-            Fragment selectedFragment;
+
+            int selected = menuItem.getItemId();
 
             switch (menuItem.getItemId()) {
                 case R.id.nav_home:
-                    selectedFragment = new HomeFragment();
+                    if(bottomNav.getSelectedItemId() == selected) {
+                        break;
+                    }
+                    else {
+                        selectedFragment = new HomeFragment();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                    }
                     break;
 
                 case R.id.nav_graph:
+                    if(bottomNav.getSelectedItemId() == selected){
+                        break;
+                    }
                     selectedFragment = new GraphFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
                     break;
 
                 case R.id.nav_weather:
+                    if(bottomNav.getSelectedItemId() == selected){
+                        break;
+                    }
                     selectedFragment = new WeatherFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
                     break;
 
                     default:
                         selectedFragment = new WeatherFragment();
             }
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
 
             return true;
         }

@@ -38,6 +38,10 @@
         <service android:name=".service.WeatherJobScheduler"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name=".service.AirNowJobScheduler"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

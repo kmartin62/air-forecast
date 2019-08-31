@@ -1,6 +1,7 @@
 package com.example.air_forecast.api;
 
 import com.example.air_forecast.model.AirDetails;
+import com.example.air_forecast.model.AirDetailsNow;
 
 
 import retrofit2.Call;
@@ -27,9 +28,11 @@ public interface AirForecastAPI {
                                 @Query("country") String country,
                                 @Query("key") String key);
 
-//    @Headers("Content-Type: application/json")
-//    @GET("current/airquality?city=Skopje&country=MK&key=dba29d449897449e9f73f912b98e5681")
-//    Call<AirDetailsNow> getDetailsNow();
+    @Headers("Content-Type: application/json")
+    @GET("current/airquality")
+    Call<AirDetailsNow> getDetailsNow(@Query("city") String city,
+                                      @Query("country") String country,
+                                      @Query("key") String key);
 
 
 

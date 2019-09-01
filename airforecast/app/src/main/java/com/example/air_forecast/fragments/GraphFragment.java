@@ -60,6 +60,7 @@ public class GraphFragment extends Fragment {
         View myInflatedView = inflater.inflate(R.layout.fragment_graph, container, false);
 
         airForecastRetrieve = new AirForecastRetrieve();
+
         btnBar = myInflatedView.findViewById(R.id.btnBar);
         btnLine = myInflatedView.findViewById(R.id.btnLine);
 
@@ -74,6 +75,7 @@ public class GraphFragment extends Fragment {
 
         barChart.setDescription(description);
         lineChart.setDescription(lineDescription);
+
 
 
 
@@ -114,12 +116,12 @@ public class GraphFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 parameter = parent.getItemAtPosition(position).toString();
                 if(!chartBoolean) {
-                    airForecastRetrieve.drawBarChart(barChart, parent.getItemAtPosition(position).toString());
+                    airForecastRetrieve.checkIfExists(getKey7(), getActivity(), barChart, parent.getItemAtPosition(position).toString());
                     description.setText(parent.getItemAtPosition(position).toString().toUpperCase());
                     barChart.invalidate();
                 }
                 else {
-                    airForecastRetrieve.drawLineChart(lineChart, parent.getItemAtPosition(position).toString());
+                    airForecastRetrieve.checkIfExists(getKey7(), getActivity(), lineChart, parent.getItemAtPosition(position).toString());
                     lineDescription.setText(parent.getItemAtPosition(position).toString().toUpperCase());
                     lineChart.invalidate();
                 }
@@ -135,6 +137,18 @@ public class GraphFragment extends Fragment {
     }
 
     private String getKey(){
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2:00"));
+        calendar.add(Calendar.HOUR_OF_DAY, 7);
+        Date currentLocalTime = calendar.getTime();
+        @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:'00' a");
+        date.setTimeZone(TimeZone.getTimeZone("GMT+2:00"));
+
+        String[] h = date.format(currentLocalTime).split(" ");
+
+        return h[0] + "T" + h[1].split(" ")[0] + ":00";
+    }
+
+    private String getKey7(){
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2:00"));
         calendar.add(Calendar.HOUR_OF_DAY, 7);
         Date currentLocalTime = calendar.getTime();

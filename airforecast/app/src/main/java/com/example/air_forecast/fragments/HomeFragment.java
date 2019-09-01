@@ -15,7 +15,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,11 +24,8 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.air_forecast.R;
-import com.example.air_forecast.asynctask.AirAsyncTask;
-import com.example.air_forecast.asynctask.AirNowAsyncTask;
 import com.example.air_forecast.firebase.AirForecastRetrieve;
 import com.example.air_forecast.firebase.AirNowRetrieve;
 import com.marcinmoskala.arcseekbar.ArcSeekBar;
@@ -58,10 +54,8 @@ public class HomeFragment extends Fragment {
     private TextView txtViewPm10;
     private TextView txtViewPm25;
     private TextView text_aqi;
-    private TextView txt3;
     private TextView text_pm10;
     private TextView text_pm25;
-    private TextView info_text;
     private ArcSeekBar arcSeekBar, arcSeekBarPm10, arcSeekBarPm25;
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
@@ -75,9 +69,6 @@ public class HomeFragment extends Fragment {
             builder(getContext()).show();
             return inflater.inflate(R.layout.offline, container, false);
         }
-
-//        AirNowAsyncTask airNowAsyncTask = new AirNowAsyncTask(sharedCity);
-//        airNowAsyncTask.execute();
 
 
         arcSeekBar = myInflatedView.findViewById(R.id.seekBarArc1);
@@ -102,7 +93,6 @@ public class HomeFragment extends Fragment {
         text_pm10 = myInflatedView.findViewById(R.id.text_pm10);
         text_pm25 = myInflatedView.findViewById(R.id.text_pm25);
         text_aqi = myInflatedView.findViewById(R.id.text_aqi);
-        info_text = myInflatedView.findViewById(R.id.infoText);
 
         aqi_frame = myInflatedView.findViewById(R.id.frame_aqi);
         pm10_frame = myInflatedView.findViewById(R.id.frame_pm10);
@@ -111,7 +101,6 @@ public class HomeFragment extends Fragment {
 
         dropDown = myInflatedView.findViewById(R.id.spinner);
 
-        airForecastRetrieve.checkIfExists(getKey7(), getActivity());
 
 
         return myInflatedView;
@@ -194,12 +183,12 @@ public class HomeFragment extends Fragment {
             dropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                    airNowRetrieve.checkIfExists(getKey(), getActivity());
                     initFrames();
                     sharedCity = hashMap.get(parent.getItemAtPosition(position).toString());
-                    airForecastRetrieve.checkIfExists(getKey7(), getActivity());
-                    myCity = sharedCity;
-                    airNowRetrieve.retrieveData(myCity, getKey(), txtViewAqi, txtViewPm10, txtViewPm25,
+                    airNowRetrieve.retrieveData(sharedCity, getKey(), txtViewAqi, txtViewPm10, txtViewPm25,
                             getActivity(), arcSeekBar, arcSeekBarPm10, arcSeekBarPm25);
+
 
                 }
 

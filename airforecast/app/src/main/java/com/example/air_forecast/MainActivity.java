@@ -67,11 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        if(!isConnected(this)) {
-//            builder(this).show();
-//        }
-
-        broadcastReceiver = new NetworkChangeReceiver();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("SkopjeN").child(getKey());
 
@@ -107,42 +102,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private boolean isConnected(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-
-        if(networkInfo != null && networkInfo.isConnectedOrConnecting()) {
-            NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-            NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-            if((mobile != null && mobile.isConnectedOrConnecting()) || (wifi != null && wifi.isConnectedOrConnecting())) return true;
-            else return false;
-        }
-        else {
-            return false;
-        }
-
-    }
-
-    private AlertDialog.Builder builder(Context c) {
-        AlertDialog.Builder build = new AlertDialog.Builder(c);
-        build.setTitle("No internet connection");
-
-        build.setPositiveButton("Connect to network", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
-            }
-        });
-
-        build.setNegativeButton("Exit", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
-
-        return build;
-    }
 
     private void scheduleJob() {
         ComponentName componentName = new ComponentName(Objects.requireNonNull(this), AirNowJobScheduler.class);
@@ -160,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String getKey(){
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2:00"));
-        calendar.add(Calendar.HOUR_OF_DAY, 1);
+//        calendar.add(Calendar.HOUR_OF_DAY, 1);
         Date currentLocalTime = calendar.getTime();
         @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("HH:'00' a");
         date.setTimeZone(TimeZone.getTimeZone("GMT+2:00"));

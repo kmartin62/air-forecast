@@ -52,14 +52,12 @@ public class GraphFragment extends Fragment {
     private String parameter;
     private Description description;
     private Description lineDescription;
-    private AirForecastRetrieve airForecastRetrieve;
+    private AirForecastRetrieve airForecastRetrieve = new AirForecastRetrieve();;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View myInflatedView = inflater.inflate(R.layout.fragment_graph, container, false);
-
-        airForecastRetrieve = new AirForecastRetrieve();
 
         btnBar = myInflatedView.findViewById(R.id.btnBar);
         btnLine = myInflatedView.findViewById(R.id.btnLine);
@@ -75,10 +73,6 @@ public class GraphFragment extends Fragment {
 
         barChart.setDescription(description);
         lineChart.setDescription(lineDescription);
-
-
-
-
 
         btnBar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +92,7 @@ public class GraphFragment extends Fragment {
     }
 
     private void barChartClick(){
+//        barChart.setActivated(false);
         lineChart.setVisibility(View.INVISIBLE);
         airForecastRetrieve.drawBarChart(barChart, parameter);
         chartBoolean = false;
@@ -118,12 +113,10 @@ public class GraphFragment extends Fragment {
                 if(!chartBoolean) {
                     airForecastRetrieve.checkIfExists(getKey7(), getActivity(), barChart, parent.getItemAtPosition(position).toString());
                     description.setText(parent.getItemAtPosition(position).toString().toUpperCase());
-                    barChart.invalidate();
                 }
                 else {
                     airForecastRetrieve.checkIfExists(getKey7(), getActivity(), lineChart, parent.getItemAtPosition(position).toString());
                     lineDescription.setText(parent.getItemAtPosition(position).toString().toUpperCase());
-                    lineChart.invalidate();
                 }
             }
 
@@ -134,6 +127,13 @@ public class GraphFragment extends Fragment {
         });
         super.onStart();
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        barChart.setActivated(false);
+        lineChart.setActivated(false);
     }
 
     private String getKey(){

@@ -46,11 +46,6 @@ public class WeatherFragment extends Fragment {
 
     private ArcSeekBar seekBar;
 
-
-    private static String[] items = new String[]{"uv", "wind_cdir", "wind_spd"};
-    private ArrayAdapter<String> adapter;
-    private Spinner spinner;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -71,15 +66,10 @@ public class WeatherFragment extends Fragment {
 
         txtInfo = myInflatedView.findViewById(R.id.txtInfo);
 
-        txtInfo.setText("*информации за " + sharedCity);
-
-        txtComfort.setText("НИВО НА КОМФОРТ");
-        txtWind.setText("НИВО НА ВЕТEР");
-
-
         seekBar = myInflatedView.findViewById(R.id.seekBarArcWeather);
-        seekBar.setEnabled(false);
-        seekBar.setMaxProgress(23);
+
+        init();
+
 
         weatherForecastRetrieve.retrieveData(sharedCity, getKey(), txtHour,
                 txtDate, txtPres, txtTemp, txtUv, txtDirection, txtSpeed, seekBar, getActivity());
@@ -88,6 +78,15 @@ public class WeatherFragment extends Fragment {
         return myInflatedView;
     }
 
+    private void init(){
+        txtInfo.setText("*информации за " + sharedCity);
+
+        txtComfort.setText("НИВО НА КОМФОРТ");
+        txtWind.setText("НИВО НА ВЕТEР");
+
+        seekBar.setEnabled(false);
+        seekBar.setMaxProgress(23);
+    }
     private String getKey(){
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2:00"));
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

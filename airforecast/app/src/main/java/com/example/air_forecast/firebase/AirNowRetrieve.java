@@ -25,6 +25,7 @@ import java.util.Objects;
 import static com.example.air_forecast.fragments.HomeFragment.sharedCity;
 
 public class AirNowRetrieve {
+
     public void retrieveData(final String city, String key, final TextView textAqi, final TextView pm10, final TextView pm25,
                              final Activity activity, final ArcSeekBar arcSeekBarAqi, final ArcSeekBar arcSeekBarPm10,
                              final ArcSeekBar arcSeekBarPm25) {

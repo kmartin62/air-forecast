@@ -15,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +48,6 @@ public class HomeFragment extends Fragment {
     private Spinner dropDown;
     private AirNowRetrieve airNowRetrieve = new AirNowRetrieve();
     private FrameLayout pm10_frame, pm25_frame, aqi_frame;
-//    private static String[] items = new String[]{"Skopje", "Veles", "Strumica", "Radovis"};
     final AirForecastRetrieve airForecastRetrieve = new AirForecastRetrieve();
 
     private TextView txtViewAqi;
@@ -108,7 +108,6 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onResume() {
-//        Toast.makeText(getActivity(), "onResume", Toast.LENGTH_SHORT).show();
         super.onResume();
     }
 
@@ -158,7 +157,6 @@ public class HomeFragment extends Fragment {
 
     private String getKey(){
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2:00"));
-//        calendar.add(Calendar.HOUR_OF_DAY, 1);
         Date currentLocalTime = calendar.getTime();
         @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("HH:'00' a");
         date.setTimeZone(TimeZone.getTimeZone("GMT+2:00"));
@@ -178,13 +176,12 @@ public class HomeFragment extends Fragment {
     public void onStart() {
 
         if(isConnected(getContext())) {
+            initFrames();
             init();
 
             dropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                    airNowRetrieve.checkIfExists(getKey(), getActivity());
-                    initFrames();
                     sharedCity = hashMap.get(parent.getItemAtPosition(position).toString());
                     airNowRetrieve.retrieveData(sharedCity, getKey(), txtViewAqi, txtViewPm10, txtViewPm25,
                             getActivity(), arcSeekBar, arcSeekBarPm10, arcSeekBarPm25);
@@ -227,22 +224,8 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onStop() {
-//        Toast.makeText(getActivity(), "OnStop started", Toast.LENGTH_SHORT).show();
         myCity = sharedCity;
 
         super.onStop();
     }
-
-    private String getKey7(){
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+2:00"));
-        calendar.add(Calendar.HOUR_OF_DAY, 7);
-        Date currentLocalTime = calendar.getTime();
-        @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:'00' a");
-        date.setTimeZone(TimeZone.getTimeZone("GMT+2:00"));
-
-        String[] h = date.format(currentLocalTime).split(" ");
-
-        return h[0] + "T" + h[1].split(" ")[0] + ":00";
-    }
-
 }

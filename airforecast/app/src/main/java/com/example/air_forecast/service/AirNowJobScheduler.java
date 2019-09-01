@@ -25,11 +25,9 @@ public class AirNowJobScheduler extends JobService {
             @Override
             public void run() {
 
-//                WeatherAsyncTask weatherAsyncTask = new WeatherAsyncTask(HomeFragment.sharedCity);
-//                weatherAsyncTask.execute();
 
-                AirNowAsyncTask airAsyncTask = new AirNowAsyncTask(HomeFragment.sharedCity);
-                airAsyncTask.execute();
+                AirNowAsyncTask airNowAsyncTask = new AirNowAsyncTask(HomeFragment.sharedCity);
+                airNowAsyncTask.execute();
 
                 jobFinished(params, true);
 

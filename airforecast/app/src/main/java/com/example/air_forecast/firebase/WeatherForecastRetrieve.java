@@ -125,7 +125,7 @@ public class WeatherForecastRetrieve {
 
     private void scheduleJob(Activity activity) {
         ComponentName componentName = new ComponentName(Objects.requireNonNull(activity), WeatherJobScheduler.class);
-        JobInfo jobInfo = new JobInfo.Builder(1456759824, componentName)
+        JobInfo jobInfo = new JobInfo.Builder(1456759834, componentName)
                 .setPersisted(true)
                 .setPeriodic(1000 * 60 * 15) //15 minuti
                 .build();

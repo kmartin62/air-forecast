@@ -5,10 +5,12 @@ import android.app.job.JobService;
 import android.util.Log;
 
 import com.example.air_forecast.asynctask.AirAsyncTask;
+import com.example.air_forecast.asynctask.AirNowAsyncTask;
 import com.example.air_forecast.asynctask.WeatherAsyncTask;
 import com.example.air_forecast.fragments.HomeFragment;
 
 import static com.example.air_forecast.MainActivity.isClicked;
+import static com.example.air_forecast.fragments.HomeFragment.sharedCity;
 
 public class AirJobScheduler extends JobService {
 
@@ -40,7 +42,9 @@ public class AirJobScheduler extends JobService {
             @Override
             public void run() {
 
-                AirAsyncTask airAsyncTask = new AirAsyncTask(HomeFragment.sharedCity);
+                new AirNowAsyncTask(sharedCity).execute();
+
+                AirAsyncTask airAsyncTask = new AirAsyncTask(sharedCity);
                 airAsyncTask.execute();
 
                 jobFinished(params, true);

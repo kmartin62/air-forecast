@@ -111,11 +111,13 @@ public class GraphFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 parameter = parent.getItemAtPosition(position).toString();
                 if(!chartBoolean) {
-                    airForecastRetrieve.checkIfExists(getKey7(), getActivity(), barChart, parent.getItemAtPosition(position).toString());
+                    airForecastRetrieve.drawBarChart(barChart, parent.getItemAtPosition(position).toString());
+//                    airForecastRetrieve.checkIfExists(getKey7(), getActivity(), barChart, parent.getItemAtPosition(position).toString());
                     description.setText(parent.getItemAtPosition(position).toString().toUpperCase());
                 }
                 else {
-                    airForecastRetrieve.checkIfExists(getKey7(), getActivity(), lineChart, parent.getItemAtPosition(position).toString());
+                    airForecastRetrieve.drawLineChart(lineChart, parent.getItemAtPosition(position).toString());
+//                    airForecastRetrieve.checkIfExists(getKey7(), getActivity(), lineChart, parent.getItemAtPosition(position).toString());
                     lineDescription.setText(parent.getItemAtPosition(position).toString().toUpperCase());
                 }
             }

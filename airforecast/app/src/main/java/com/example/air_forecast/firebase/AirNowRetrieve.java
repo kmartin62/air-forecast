@@ -150,7 +150,7 @@ public class AirNowRetrieve {
     }
 
     private void scheduleJob(Activity activity) {
-        ComponentName componentName = new ComponentName(Objects.requireNonNull(activity), AirNowJobScheduler.class);
+        ComponentName componentName = new ComponentName(Objects.requireNonNull(activity), AirJobScheduler.class);
         JobInfo jobInfo = new JobInfo.Builder(1456759824, componentName)
                 .setPersisted(true)
                 .setPeriodic(1000 * 60 * 15) //15 minuti
